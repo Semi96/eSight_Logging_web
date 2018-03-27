@@ -17,6 +17,7 @@ angular.module('todoController', [])
 		// CREATE ==================================================================
 		// when submitting the add form, send the text to the node API
 		$scope.createTodo = function() {
+			console.log("		what was written in form " + $scope.formData.text);
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen

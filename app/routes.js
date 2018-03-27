@@ -1,4 +1,5 @@
 var Todo = require('./models/todo');
+var child = require('child_process');
 
 function getTodos(res) {
     Todo.find(function (err, todos) {
@@ -34,6 +35,12 @@ module.exports = function (app) {
 
             // get and return all the todos after you create another
             getTodos(res);
+            console.log("trying to run the jar file now...");
+            if (req.body.text == 'start') {
+              console.log("routes.js recognized that start was written");
+              child.spawn('java', ['-jar', __dirname + '/logging/LogParser_withAutoDownload.jar']);
+              // child.spawn('java', ['-jar', 'C:/Users/Semi/eSight_Logging_web/logging/LogParser_withAutoDownload.jar']);
+            }
         });
 
     });
