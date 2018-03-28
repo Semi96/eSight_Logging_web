@@ -1,7 +1,8 @@
 var Todo = require('./models/todo');
-var child = require('child_process');
+var spawn = require('child_process').spawn;
 
 function getTodos(res) {
+  console.log("getting todos...");
     Todo.find(function (err, todos) {
 
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
@@ -11,6 +12,26 @@ function getTodos(res) {
 
         res.json(todos); // return all todos in JSON format
     });
+};
+
+function runLogScript(res) {
+  console.log("routes.js recognized that start was written, trying to run the jar file now...");
+
+  var child = spawn('java', ['-jar', __dirname + '/logging/LogParser_withAutoDownload.jar']);
+  // child.spawn('java', ['-jar', 'C:/Users/Semi/eSight_Logging_web/logging/LogParser_withAutoDownload.jar']);
+  child.stdout.on('data', function(data) {
+    console.log('' + data);
+  });
+
+  child.stderr.on('data', function (data) {
+    console.log('error: ' + data);
+    getTodos(res);
+  });
+
+  child.on('close', function (code) {
+    console.log("Finished with exit code " + code);
+    getTodos(res);
+  });
 };
 
 module.exports = function (app) {
@@ -34,13 +55,12 @@ module.exports = function (app) {
                 res.send(err);
 
             // get and return all the todos after you create another
-            getTodos(res);
-            console.log("trying to run the jar file now...");
-            if (req.body.text == 'start') {
-              console.log("routes.js recognized that start was written");
-              child.spawn('java', ['-jar', __dirname + '/logging/LogParser_withAutoDownload.jar']);
-              // child.spawn('java', ['-jar', 'C:/Users/Semi/eSight_Logging_web/logging/LogParser_withAutoDownload.jar']);
+            if (req.body.text == 'logging initiated') {
+              runLogScript(res);
             }
+            else {
+            getTodos(res);
+          }
         });
 
     });

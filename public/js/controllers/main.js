@@ -4,6 +4,7 @@ angular.module('todoController', [])
 	.controller('mainController', ['$scope','$http','Todos', function($scope, $http, Todos) {
 		$scope.formData = {};
 		$scope.loading = true;
+		$scope.inProg = false;
 
 		// GET =====================================================================
 		// when landing on the page, get all todos and show them
@@ -13,6 +14,25 @@ angular.module('todoController', [])
 				$scope.todos = data;
 				$scope.loading = false;
 			});
+
+// EXECUTE app/logging/LogParser.jar
+			$scope.executeLogScript = function() {
+
+				// make sure script is not already in progress
+				if ($scope.inProg != true) {
+					$scope.inProg = true;
+
+					// simply for visual indication through the base app's framework, add a todo to show the process has started
+					Todos.create($scope.formData = {text : 'logging initiated'})
+
+						// if successful creation, call our get function to get all the new todos
+						.success(function(data) {
+							$scope.inProg = false;
+							$scope.formData = {}; // clear the form so our user is ready to enter another
+							$scope.todos = data; // assign our new list of todos
+						});
+				}
+			};
 
 		// CREATE ==================================================================
 		// when submitting the add form, send the text to the node API
@@ -25,6 +45,7 @@ angular.module('todoController', [])
 				$scope.loading = true;
 
 				// call the create function from our service (returns a promise object)
+				// console.log("form data: " + JSON.stringify($scope.formData);
 				Todos.create($scope.formData)
 
 					// if successful creation, call our get function to get all the new todos

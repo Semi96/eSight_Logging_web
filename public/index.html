@@ -33,14 +33,14 @@
 
 		<!-- HEADER AND TODO COUNT -->
 		<div class="jumbotron text-center">
-			<h1>I'm a Todo-aholic <span class="label label-info">{{ todos.length }}</span></h1>
+			<h1>eSight Web Logging <span class="label label-info">{{ todos.length }}</span></h1>
 		</div>
 
 		<!-- TODO LIST -->
 		<div id="todo-list" class="row">
 			<div class="col-sm-4 col-sm-offset-4">
 
-				
+
 
 				<!-- LOOP OVER THE TODOS IN $scope.todos -->
 				<div class="checkbox" ng-repeat="todo in todos">
@@ -72,10 +72,20 @@
 			</div>
 		</div>
 
-		<div class="text-center text-muted">
+		<!-- FORM TO CREATE CUSTOM BUTTONS -->
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<button type="submit" class="btn btn-primary btn-lg" ng-click="executeLogScript()" ng-disabled="inProg">Start Log Script</button>
+			<p class="text-center" ng-show="inProg">
+				<span class="fa fa-spinner fa-spin fa-3x"></span>
+			</p>
+		</div>
+
+
+
+		<!-- <div class="text-center text-muted">
 			<p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
 			<p>Read the <a href="http://scotch.io/tutorials/javascript/creating-a-single-page-todo-app-with-node-and-angular">tutorial</a>.</p>
-		</div>
+		</div> -->
 
 	</div>
 
