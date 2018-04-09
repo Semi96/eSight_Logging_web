@@ -7,6 +7,7 @@ var database = require('./config/database'); 			// load the database config
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var projectDir = __dirname;
 
 // configuration ===============================================================
 mongoose.connect(database.localUrl); 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
@@ -20,7 +21,7 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 
 
 // routes ======================================================================
-require('./app/routes.js')(app);
+require('./app/routes.js')(app, projectDir);
 
 // listen (start app with node server.js) ======================================
 app.listen(port);
