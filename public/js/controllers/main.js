@@ -21,9 +21,9 @@ angular.module('todoController', [])
 				// make sure script is not already in progress
 				if ($scope.inProg != true) {
 					$scope.inProg = true;
-
+					var date = new Date();
 					// simply for visual indication through the base app's framework, add a todo to show the process has started
-					Todos.create($scope.formData = {text : 'logging initiated'})
+					Todos.create($scope.formData = {text : 'last executed: ' + date, reqType : 'execute'})
 
 						// if successful creation, call our get function to get all the new todos
 						.success(function(data) {
@@ -31,6 +31,18 @@ angular.module('todoController', [])
 							$scope.formData = {}; // clear the form so our user is ready to enter another
 							$scope.todos = data; // assign our new list of todos
 						});
+				}
+			};
+
+			$scope.deleteServerLogs = function() {
+				if ($scope.inProg != true) {
+				Todos.create($scope.formData = {text : 'deleted server logs', reqType : 'delete'})
+
+					// if successful creation, call our get function to get all the new todos
+					.success(function(data) {
+						$scope.formData = {}; // clear the form so our user is ready to enter another
+						$scope.todos = data; // assign our new list of todos
+					});
 				}
 			};
 

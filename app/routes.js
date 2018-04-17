@@ -15,7 +15,7 @@ function getTodos(res) {
 };
 
 function runLogScript(res) {
-  console.log("routes.js recognized that start was written, trying to run the jar file now...");
+  console.log("trying to run the jar file now...");
 
   var child = spawn('java', ['-jar', __dirname + '/logging/LogParser_withAutoDownload.jar']);
   // child.spawn('java', ['-jar', 'C:/Users/Semi/eSight_Logging_web/logging/LogParser_withAutoDownload.jar']);
@@ -49,16 +49,25 @@ module.exports = function (app, projectDir) {
         // create a todo, information comes from AJAX request from Angular
         Todo.create({
             text: req.body.text,
+            reqType: req.body.reqType,
             done: false
         }, function (err, todo) {
             if (err)
                 res.send(err);
 
+console.log('should we run script: ' + req.body.reqType);
             // get and return all the todos after you create another
-            if (req.body.text == 'logging initiated') {
+            if (req.body.reqType == 'execute') {
+              console.log('Running Script now!!');
               runLogScript(res);
             }
+            else if (req.body.reqType == 'delete') {
+              console.log('Deleting logs on server...');
+
+            }
             else {
+              console.log('Didnt run script...');
+
             getTodos(res);
           }
         });

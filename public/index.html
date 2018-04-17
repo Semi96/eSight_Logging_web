@@ -56,25 +56,24 @@
 			</div>
 		</div>
 
-		<!-- FORM TO CREATE TODOS -->
+		<!-- FORM TO CREATE TODOS
 		<div id="todo-form" class="row">
 			<div class="col-sm-8 col-sm-offset-2 text-center">
 				<form>
 					<div class="form-group">
 
-						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
 						<input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
 					</div>
 
-					<!-- createToDo() WILL CREATE NEW TODOS -->
 					<button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add</button>
 				</form>
 			</div>
 		</div>
-
+-->
 		<!-- FORM TO CREATE CUSTOM BUTTONS -->
 		<div class="col-sm-8 col-sm-offset-2 text-center">
 			<button type="submit" class="btn btn-primary btn-lg" ng-click="executeLogScript()" ng-disabled="inProg">Start Log Script</button>
+			<button type="submit" class="btn btn-primary btn-lg" ng-click="deleteServerLogs()" ng-disabled="inProg">Delete Server Log Files</button>
 			<p class="text-center" ng-show="inProg">
 				<span class="fa fa-spinner fa-spin fa-3x"></span>
 			</p>
