@@ -37,9 +37,9 @@ function runLogScript(res) {
 
 
 // Note: command only works on Linux systems; will only delete server-side files if server OS is Linux
-function deleteServerLogs(res) {
+function deleteServerLogs(res, projectDir) {
   console.log("trying to delete server logs now...");
-  var commandSyntax = 'rm -rf ' + __dirname + '/Log_Files';
+  var commandSyntax = 'rm -rf ' + projectDir + '/Log_Files'; // __dirname will not work, need home directory of eSight_Logging_web project
 
   // var child = spawn('sh', ['-c', commandSyntax]);
   var child = exec(commandSyntax, function (error, stdout, stderr) {
@@ -85,7 +85,7 @@ module.exports = function (app, projectDir) {
             }
             else if (req.body.reqType == 'delete') {
               console.log('Deleting logs on server...');
-              deleteServerLogs(res);
+              deleteServerLogs(res, projectDir);
             }
             else {
               console.log('Didnt run script...');
