@@ -1,5 +1,6 @@
 var Todo = require('./models/todo');
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 
 function getTodos(res) {
   console.log("getting todos...");
@@ -23,7 +24,7 @@ function runLogScript(res) {
     console.log('' + data);
   });
 
-  child.stderr.on('data', function (data) {
+  child.stderr.on('data', function (data) { //// error instead of data
     console.log('error: ' + data);
     getTodos(res);
   });
@@ -33,6 +34,27 @@ function runLogScript(res) {
     getTodos(res);
   });
 };
+
+
+// Note: command only works on Linux systems; will only delete server-side files if server OS is Linux
+function deleteServerLogs(res) {
+  console.log("trying to delete server logs now...");
+  var commandSyntax = 'rm -rf ' + __dirname + '/Log_Files';
+
+  // var child = spawn('sh', ['-c', commandSyntax]);
+  var child = exec(commandSyntax, function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
+    else {
+      console.log("Finished with exit code " + error);
+    }
+    getTodos(res);
+  });
+};
+
 
 module.exports = function (app, projectDir) {
 
@@ -55,7 +77,7 @@ module.exports = function (app, projectDir) {
             if (err)
                 res.send(err);
 
-console.log('should we run script: ' + req.body.reqType);
+            console.log('should we run script: ' + req.body.reqType);
             // get and return all the todos after you create another
             if (req.body.reqType == 'execute') {
               console.log('Running Script now!!');
@@ -63,7 +85,7 @@ console.log('should we run script: ' + req.body.reqType);
             }
             else if (req.body.reqType == 'delete') {
               console.log('Deleting logs on server...');
-
+              deleteServerLogs(res);
             }
             else {
               console.log('Didnt run script...');
